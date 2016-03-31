@@ -33,6 +33,7 @@ var server = app.listen(3000, function () {
 var clientData = {};
 var topData = [];
 var energyData = [];
+var equipData = [];
 
 
 // Hit this first to authenticate
@@ -43,7 +44,7 @@ app.get('/login', function (req,res){
 			// console.log(apiClient);
 			// console.log(' ----- ');
 			var clientInfo = JSON.parse(apiClient);
-			//console.log(clientInfo);
+			console.log(clientInfo);
 			clientData.uuid = clientInfo[0].id;
 			clientData.locationID = clientInfo[0].locations[0];
 			res.send(clientData);
@@ -65,13 +66,17 @@ app.get('/login', function (req,res){
 app.get('/getTop', function (req,res){
 	// Set the date range you want to examine
 	var start = encodeURIComponent('2015-01-01 00:00:00Z');
-	var end = encodeURIComponent('2015-09-01 00:00:00Z');
+	var end = encodeURIComponent('2015-01-03 00:00:00Z');
 	var client = clientData.uuid;
 
 	var top10 = c.apiCall('/api/client/'+client+'/top_consumers/?count=10&fromTime='+start+'&toTime='+end, function (top10){
 		console.log(JSON.parse(top10));
 		topData.push(JSON.parse(top10));
 		res.end();
+		for(var i =0;i<JSON.parse(top10).now.total.length;i++)
+		{
+			console.log(JSON.parse(top10).now.total[0]);
+		}
 	});
 });
 
@@ -89,6 +94,16 @@ app.get('/getEnergy', function (req,res){
 	    energyData.push(JSON.parse(energy));
 	    res.end()
 	});
+});
+
+app.get('/getEq', function (req,res){
+var id =  '3e9815ef-af63-4ca1-af80-641885547931';
+console.log(clientData);
+var equip = c.apiCall('/api/equipment/'+id + '/data/', function (equip){
+		console.log(JSON.parse(equip));
+		equipData.push(JSON.parse(equip));
+		res.end()
+});
 });
 
 app.get('/top10', function (req,res){
