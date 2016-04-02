@@ -1,92 +1,16 @@
 /* Style for heading for main page */
 
-.heading
-{
-  display: inline-block;
-  margin: auto;
-  width:100%;
-}
-.mainHeading
-{
-  font-size : 5em;
-  font-weight: 100;
-  text-align: center;
-}
-/* room styling */
-.room-category
-{
-  text-decoration: none;
-}
-
-.room
+.coffeeButton
 {
   display: block;
   border: 4px solid #dddddd;
   border-radius: 30px;
   margin: auto;
-  margin-top: 4%;
-  margin-bottom: 4%;
   background-color: #ffffff;
   width: 80%;
   background-size: cover;
   box-shadow: 2px 2px 20px #888888;
   opacity:0.8;
-}
-.japanese-room
-{
-  height: 500px;
-  background-image: url('/assets/japanese.jpg');
-
-}
-.shop-room
-{
-  height: 200px;
-  background-image: url('/assets/shop.jpeg');
-
-}
-.ER-room
-{
-  height: 150px;
-  background-image: url('/assets/ER.jpg');
-
-}
-.kitchen-room
-{
-  height: 100px;
-  background-image: url('/assets/kitchen.jpeg');
-
-}
-.phys-comp-room
-{
-  height: 400px;
-  background-image: url('/assets/pcomp.jpeg');
-}
-/*Name in the room*/
-.room-name
-{
-  font-size : 4em;
-  font-weight: 400;
-  color: #ffffff;
-  text-align: center;
-  height: 100%;
-}
-.japanese-room .room-name
-{
-  line-height: 500px;
-}
-.shop-room .room-name
-{
-  line-height: 200px;
-}
-.ER-room .room-name
-{
-  line-height: 150px;
-}
-.kitchen-room .room-name
-{
-  line-height: 100px;
-}
-.phys-comp-room .room-name
-{
-  line-height: 400px;
+  font-size: 2.2em;
+  font-family: Raleway;
 }
