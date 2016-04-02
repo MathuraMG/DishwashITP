@@ -66,42 +66,56 @@ app.get('/atITP', function (req,res){
 	GET CURRENT TIME
 	****************************************/
 	var endTime = new Date();
-	var endTimeFormatted = endTime.toISOString();
+	//endTime.setMinutes(0);
+	//endTime.setSeconds(0);
+	var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
 
 	/****************************************
 	GET TIME N HOURS BEFORE
 	****************************************/
-	var noOfHours = 24*6;
+	var noOfHours = 24;
 	var interval = '15min';
 
 	var startTime = new Date( endTime.getTime() - noOfHours*60*60*1000);
-	var startTimeFormatted = startTime.toISOString();
+	//startTime.setMinutes(0);
+	//startTime.setSeconds(0);
+	var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
 
 
 	//var equipId = JSON.parse(atITP)[0].id;
   //Dish washer
-	var equipId = '5a2ed6fe-05a9-42d9-8797-88045412c05a';
+	//var equipId = '5a2ed6fe-05a9-42d9-8797-88045412c05a';
 
 	//Coffee machine
 	//var equipId = '28b35713-2259-453a-882e-65408aec2bca';
 
-	startTimeFormatted = encodeURIComponent('2015-01-01 00:00:00Z');
-	endTimeFormatted = encodeURIComponent('2015-09-01 00:00:00Z');
+	//:Laser
+	var equipId = 'a85a60b9-c858-446a-b083-33aae441c12f';
 
+	// startTimeFormatted = encodeURIComponent('2016-03-25T00:00:34Z');
+	// endTimeFormatted = encodeURIComponent('2016-04-02T00:00:23Z');
 
-	var detailOfEquipmentUrl = '/api/equipment/' + equipId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=day&cost=true';
+	//console.log(startTimeFormatted);
+	//startTimeFormatted = '2016-03-25T00:00:34Z';
+	//console.log(startTimeFormatted);
+	//console.log(endTimeFormatted);
+	//endTimeFormatted = '2016-04-02T00:00:23Z';
+	//console.log(endTimeFormatted);
+
+	var detailOfEquipmentUrl = '/api/equipment/' + equipId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=min&cost=true';
 	var laser = c.apiCall(detailOfEquipmentUrl, function(laser){
 		var b = JSON.parse(laser);
 		var c = b.data;
 		//sent just the required data
-		console.log(c);
+		//console.log(c);
 		var data = [];
 		for(var i=0;i<c.length;i++)
 		{
 			var xAxis = i*15;
 			//var yAxis = c[i]["Coffee MakerTotalCost"]
-			var yAxis = c[i]["DishwasherTotalCost"];
-			console.log(yAxis);
+			//var yAxis = c[i]["DishwasherTotalCost"];
+			var yAxis = c[i]["3 Laser CuttersTotalCost"];
+			//console.log(yAxis);
 			data[i] = {x:xAxis, y:yAxis};
 		}
 
