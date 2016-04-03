@@ -24,13 +24,13 @@ $(document).ready(function(){
 function drawGraph(allLineData)
 {
   var vis = d3.select('#visualisation'),
-      WIDTH = 1000,
+      WIDTH = 0.8*screen.width,
       HEIGHT = 500,
       MARGINS = {
         top: 20,
-        right: 20,
+        right: 0.1*screen.width,
         bottom: 20,
-        left: 50
+        left: 0.1*screen.width
       },
       xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([0,24]),
       yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,500]),
@@ -66,6 +66,8 @@ function drawGraph(allLineData)
     var noOfGraphs = allLineData.length;
     //console.log('no of graphs -- ' + noOfGraphs);
 
+    var allIndexDiv = document.getElementsByClassName('allIndexButtons')[0];
+
     for(var i=0;i<noOfGraphs;i++){
       var totalEnergy = 0;
       //console.log(allLineData[i].value);
@@ -73,14 +75,6 @@ function drawGraph(allLineData)
       totalEnergy = allLineData[i].totalEnergy;
       //console.log('total energy is of -- ' + allLineData[i].name + ' is -- ' + totalEnergy );
 
-
-      // if(allLineData[i].name.localeCompare("x") == 0){
-      //   console.log('garbegeish');
-      // }
-      // else if(allLineData[i].name.localeCompare("Outlet") == 0){
-      //   console.log('garbegeish outlet');
-      // }
-      // else
       if(totalEnergy < 0.0001 ){
 
       }
@@ -91,50 +85,51 @@ function drawGraph(allLineData)
       {
         console.log('drawing graph for -- ' + allLineData[i].name );
         var className = 'class-'+allLineData[i].name;
+        var color = d3.hsl(i*15, 0.5,0.5);
+        var classNamePath = className + ' graphPath';
         vis.append('svg:path')
         .attr('d', lineFunc(allLineData[i].value))
-        .attr('stroke', d3.rgb(i*20,i*20,i*10))
+        .attr('stroke', color)
         .attr('stroke-width', 1)
         .attr('fill', 'none')
-        .style('display','block')
-        .attr('class',className);
+        .attr('class',classNamePath);
 
+        var classNameText = className + ' graphText';
         vis.append('svg:text')
     		.attr('transform', 'translate(' + (910) + ',' + (500-allLineData[i].value[22].y)+ ')')
     		.attr('dy', '0')
     		.attr('text-anchor', 'start')
-    		.style('fill', '#000000')
-        .style('font-size','0.5em')
-        .style('display','block')
-        .attr('class',className)
+    		.style('fill', color)
+        .attr('class',classNameText)
     		.text(allLineData[i].name);
 
-        indexContent(allLineData[i].name,className);
+        indexContent(allLineData[i].name,className, allIndexDiv);
       }
     }
 }
 
-function indexContent(text,className)
+function indexContent(text,className,allIndexDiv)
 {
   console.log('drawing button for -- ' + text);
   var a = document.createElement('button');
   a.innerHTML = text;
   a.classList.add('indexElements');
-  document.body.appendChild(a);
+  allIndexDiv.appendChild(a);
   a.onclick = function(){
     var line = document.getElementsByClassName(className)[0];
     var lineName = document.getElementsByClassName(className)[1];
-    if(line.style.display.localeCompare('block') == 0)
-    {
-      line.style.display = 'none';
-      lineName.style.display = 'none';
-      a.style.background = '#333333';
-    }
-    else
+    if(line.style.display.localeCompare('none') == 0)
     {
       line.style.display = 'block';
       lineName.style.display = 'block';
       a.style.background = '#ffffff';
     }
+    else
+    {
+      line.style.display = 'none';
+      lineName.style.display = 'none';
+      a.style.background = '#aaaaaa';
+    }
+
   }
 }

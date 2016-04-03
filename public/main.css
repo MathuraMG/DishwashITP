@@ -1,30 +1,39 @@
 /* Style for heading for main page */
 
-.coffeeButton
-{
-  display: block;
-  border: 4px solid #dddddd;
-  border-radius: 30px;
-  margin: auto;
-  background-color: #ffffff;
-  width: 80%;
-  background-size: cover;
-  box-shadow: 2px 2px 20px #888888;
-  opacity:0.8;
-  font-size: 2.2em;
-  font-family: Raleway;
-}
 .x-axis text {
-  font-family: sans-serif;
+  font-family: Raleway;
   font-size: 11px;
 }
 .y-axis text {
-  font-family: sans-serif;
+  font-family: Raleway;
   font-size: 11px;
 }
 .indexElements {
-  display: inline;
+  display: block;
   border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 15px;
+  margin-top: 10px;
+  width: 100%;
+  font-family: Raleway;
+  font-size: 0.7em;
+  height: 3em;
+  background: #ffffff;
+}
+#visualisation {
+  display: inline-block;
+  width: 80%;
+  height: 500px;
+}
+.graphPath {
+  display: block;
+}
+
+.graphText {
+  font-family: Raleway;
+  font-size: 0.5em;
+  font-weight: 700;
+  display: 'block';
+}
+.allIndexButtons {
+  width: 19%;
+  display: inline-block;
 }
