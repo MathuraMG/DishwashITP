@@ -4,7 +4,8 @@ $(document).ready(function(){
   $.ajax({
     url:"/login",
     success: function(result){
-      console.log("test3");
+      console.log('there should be nice data here. SHOULD');
+      console.log(result);
     }
   });
  $(".coffeeButton").click(function(){

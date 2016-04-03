@@ -1,7 +1,12 @@
 var express = require('express');
 var client1 = require('./client.js');
+var equipmentObject = require('./equipment.js');
+
 var app = express();
 var c = new client1;
+
+var noComplete = 0;
+
 
 //To use static HTML pages
 app.use(express.static('public'));
@@ -26,22 +31,37 @@ var clientData = {};
 var topData = [];
 var energyData = [];
 var equipData = [];
+var equipmentIds = [];
 
 
 // Hit this first to authenticate
 app.get('/login', function (req,res){
-	console.log('potato');
+	var equipmentResponse = [];
+	//console.log('potato');
 	var data = c.login(function (data){
 		console.log("YOU ARE AUTHENTICATED");
 
 		var apiClient = c.apiCall('/api/client/', function (apiClient){
-			// console.log(apiClient);
-			console.log(' ----- ');
+			//console.log(apiClient);
+			//console.log(' ----- ');
 			var clientInfo = JSON.parse(apiClient);
 			console.log(clientInfo);
 			clientData.uuid = clientInfo[0].id;
-			clientData.locationID = clientInfo[0].locations[0];
-			//res.redirect('/atITP');
+
+			var shopLocationId = 'b121b9e6-44e6-40b3-b787-ee667bfa084d';
+
+			var equipFromSublocationUrl = '/api/sublocation/'+ shopLocationId +'/equipment/';
+
+			var equipmentsInShop = c.apiCall(equipFromSublocationUrl, function(equipmentsInShop){
+				var parsedData = JSON.parse(equipmentsInShop);
+				for(var i=0;i<parsedData.length;i++)
+				{
+					equipmentIds[i] = parsedData[i]["id"];
+					equipmentObject.getEquipmentData(i, equipmentIds[i],c,equipmentResponse,parsedData.length,res);
+				}
+
+			});
+
 		});
 	});
 
@@ -54,7 +74,7 @@ Code to get when the coffee machine is used
 var equipId;
 app.get('/atITP', function (req,res){
 
-	var locationId = clientData.locationID;
+
 
 	/****************************************
 	GET CURRENT TIME
