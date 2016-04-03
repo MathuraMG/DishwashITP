@@ -56,30 +56,38 @@ var enertiv = function() {
   // Login runs callback to saveToken
   this.login = function(cb){
     callback = cb;
-		console.log('hello 1');
+		console.log('inside login');
     var request = https.request(options, self.saveToken);  // start it
-		console.log('hello 2');
+		console.log('inside login -- got request');
       request.write(loginData);                           // add  body of  POST request
-			consol.log(loginData);
-			console.log('hello 3');
+			console.log(loginData);
+			console.log('inside login -- got logindata');
       request.end();
-			console.log('hello 4');
+			console.log('inside login -- end');
   };
 
   // Parse response and save auth token
   // Pass that token to further API calls
   this.saveToken = function(response){
     var result = '';    // String to hold the response
+		console.log('inside saveToken');
     // As each chunk comes in, add it to the result string:
     response.on('data', function (data) {
+			console.log('checking result in saveToken');
+			console.log(result);
       result += data;
     });
 
     // When the final chunk comes in, grab the access token
     // Then run our callback function
     response.on('end', function () {
-      result = JSON.parse(result);
+
+			console.log(result);
+			result = JSON.parse(result);
+			console.log(result);
+			console.log('inside saveToken -- got result');
       accessToken = result.access_token;
+			console.log('inside saveToken -- got accesToken');
       callback();
     });
   };

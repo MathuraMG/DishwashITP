@@ -90,7 +90,7 @@ app.get('/atITP', function (req,res){
 		var parsedData = b.data;
 		//sent just the required data
 		//console.log(c);
-		var data = [];
+		var equipData = [];
 		for(var i=0;i<parsedData.length;i++)
 		{
 			var xAxis = i;
@@ -98,10 +98,9 @@ app.get('/atITP', function (req,res){
 			//var yAxis = parsedData[i]["DishwasherTotalCost"];
 			var y1Axis = parsedData[i]["3 Laser Cutters"];
 			var cost = parsedData[i]["3 Laser CuttersTotalCost"];
-			console.log(y1Axis);
-			data[i] = {x:xAxis, y1:y1Axis};
+			equipData[i] = {x:xAxis, y1:y1Axis};
 		}
-		overAllData.push(data);
+		overAllData.push(equipData);
 		// res.send(overAllData);
 
 		equipId = '28b35713-2259-453a-882e-65408aec2bca';
@@ -109,18 +108,16 @@ app.get('/atITP', function (req,res){
 		detailOfEquipmentUrl = '/api/equipment/' + equipId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=min&cost=true';
 
 		var equip2 = c.apiCall(detailOfEquipmentUrl, function(equip2){
-			b = JSON.parse(equip2);
-			parsedData = b.data;
-			//sent just the required data
-			//console.log(c);
-			data = [];
+			var b = JSON.parse(equip2);
+			var parsedData = b.data;
+			var equipData = [];
 			for(var i=0;i<parsedData.length;i++)
 			{
 				var xAxis = i;
-				var y1Axis = parsedData[i]["Coffee Maker"];	//console.log(yAxis);
-				data[i] = {x:xAxis, y1:y1Axis};
+				var y1Axis = parsedData[i]["Coffee Maker"];
+				equipData[i] = {x:xAxis, y1:y1Axis};
 			}
-			overAllData.push(data);
+			overAllData.push(equipData);
 			res.send(overAllData);
 		});
 

@@ -22,6 +22,7 @@ $(document).ready(function(){
 function drawGraph(allLineData)
 {
   lineData = allLineData[0];
+  lineData1 = allLineData[1];
   console.log(lineData.length);
 
   var vis = d3.select('#visualisation'),
@@ -75,6 +76,12 @@ function drawGraph(allLineData)
     vis.append('svg:path')
   .attr('d', lineFunc(lineData))
   .attr('stroke', '#888888')
+  .attr('stroke-width', 1)
+  .attr('fill', '#eeeeee');
+
+  vis.append('svg:path')
+  .attr('d', lineFunc(lineData1))
+  .attr('stroke', 'red')
   .attr('stroke-width', 1)
   .attr('fill', 'none');
 }
