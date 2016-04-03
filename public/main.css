@@ -15,10 +15,16 @@
   font-family: Raleway;
 }
 .x-axis text {
-    font-family: sans-serif;
-    font-size: 11px;
+  font-family: sans-serif;
+  font-size: 11px;
 }
 .y-axis text {
-    font-family: sans-serif;
-    font-size: 11px;
+  font-family: sans-serif;
+  font-size: 11px;
+}
+.indexElements {
+  display: inline;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-left: 15px;
 }

@@ -23,30 +23,31 @@ module.exports = {
         console.log('obtaining data for -- ' + keyName );
 
         var equipmentEnergy = [];
+        var totalEnergy = 0;
         for(var i =0;i<parsedData.data.length;i++)
         {
-          equipmentEnergy.push({x:i,y:parsedData.data[i][keyName]})
+          equipmentEnergy[i] = {x:i,y:parsedData.data[i][keyName]*1000};
+          totalEnergy += parsedData.data[i][keyName]*1000;
         }
-        ////console.log('Energy of equipment no ' + index + ' -- ' + equipmentEnergy);
-        equipmentResponse.push({name:keyName,value: equipmentEnergy});
+        //console.log('total energy is -- ' + totalEnergy);
+        equipmentResponse.push({name:keyName,value: equipmentEnergy,totalEnergy: totalEnergy});
+
 
       }
       else{
-        equipmentResponse.push({name:keyName,value: [0]});
+
       }
-      //console.log('the length of the response is - ' +equipmentResponse.length + ' -- length of equipments is -- ' + noOfEquipments);
+      //console.log('the length of the response is - ' + equipmentResponse.length + ' -- length of equipments is -- ' + noOfEquipments);
       if(equipmentResponse.length == noOfEquipments)
       {
-        //console.log('returning response'  + equipmentResponse);
-        console.log('sending response to front end')
         res.send(equipmentResponse);
       }
       else{
-        //console.log('continueeee!!');
-        //continue();
+
       }
 
   	});
+
 
   }
 };
