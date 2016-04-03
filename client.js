@@ -56,10 +56,14 @@ var enertiv = function() {
   // Login runs callback to saveToken
   this.login = function(cb){
     callback = cb;
+		console.log('hello 1');
     var request = https.request(options, self.saveToken);  // start it
+		console.log('hello 2');
       request.write(loginData);                           // add  body of  POST request
-
+			consol.log(loginData);
+			console.log('hello 3');
       request.end();
+			console.log('hello 4');
   };
 
   // Parse response and save auth token
@@ -83,7 +87,7 @@ var enertiv = function() {
   // Generic function for API calls using access token
   this.apiCall = function (path, cb){
 
-    callback = cb;
+    var callback = cb;
     options.method = 'GET';  // Change to a GET request
     options.path = path;     // Set our path to the argument
     options.headers = {      // Change authorization header to include our token

@@ -1,17 +1,29 @@
 var result_graph;
 $(document).ready(function(){
- $(".coffeeButton").click(function(){
-  $.ajax({url:"/login", success: function(result){
-      $(".coffeeContent")[0].innerHTML = result[0].y;
-      drawGraph(result);
+  console.log("test1");
+  $.ajax({
+    url:"/login",
+    success: function(result){
+      console.log("test3");
     }
   });
- });
+ $(".coffeeButton").click(function(){
+   console.log("test2");
+    $.ajax({
+      url:"/atITP",
+      success: function(result) {
+        console.log("test3");
+        drawGraph(result);
+      }
+    });
+  });
 });
 
-function drawGraph(lineData)
+function drawGraph(allLineData)
 {
-  console.log('hi');
+  lineData = allLineData[0];
+  console.log(lineData.length);
+
   var vis = d3.select('#visualisation'),
       WIDTH = 1000,
       HEIGHT = 500,
@@ -27,36 +39,36 @@ function drawGraph(lineData)
         return d.x;
       })]),
       yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(lineData, function(d) {
-        return d.y;
+        return d.y1;
       }), d3.max(lineData, function(d) {
-        return d.y;
+        return d.y1;
       })]),
       xAxis = d3.svg.axis()
         .scale(xRange)
-        .tickSize(5)
+        .tickSize(2)
         .tickSubdivide(true),
-      yAxis = d3.svg.axis()
+      y1Axis = d3.svg.axis()
         .scale(yRange)
-        .tickSize(5)
+        .tickSize(2)
         .orient('left')
         .tickSubdivide(true);
 
   vis.append('svg:g')
-    .attr('class', 'x axis')
+    .attr('class', 'x-axis')
     .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
     .call(xAxis);
 
   vis.append('svg:g')
-    .attr('class', 'y axis')
+    .attr('class', 'y-axis')
     .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
-    .call(yAxis);
+    .call(y1Axis);
 
   var lineFunc = d3.svg.line()
     .x(function(d) {
       return xRange(d.x);
     })
     .y(function(d) {
-      return yRange(d.y);
+      return yRange(d.y1);
     })
     .interpolate('basis');
 
