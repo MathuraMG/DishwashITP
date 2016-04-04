@@ -34,7 +34,7 @@ var equipData = [];
 var equipmentIds = [];
 
 
-// Hit this first to authenticate
+// Hit this first to authenticate and get current data
 app.get('/login', function (req,res){
 	var equipmentResponse = [];
 	//console.log('potato');
@@ -52,6 +52,19 @@ app.get('/login', function (req,res){
 
 			var equipFromSublocationUrl = '/api/sublocation/'+ shopLocationId +'/equipment/';
 
+			/******************************************
+			TIME VARIABLES FOR THE API CALL
+			******************************************/
+			var noOfHours = 24;
+
+			var endTime = new Date();
+			var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
+
+			var startTime = new Date( endTime.getTime() - noOfHours*60*60*1000);
+			var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
+			//console.log(startTimeFormatted);
+			//console.log(endTimeFormatted);
+
 			var equipmentsInShop = c.apiCall(equipFromSublocationUrl, function(equipmentsInShop){
 				var parsedData = JSON.parse(equipmentsInShop);
 				var equipmentLength = parsedData.length;
@@ -59,17 +72,48 @@ app.get('/login', function (req,res){
 				for(var i=0;i<parsedData.length;i++)
 				{
 					equipmentIds[i] = parsedData[i]["id"];
-					equipmentObject.getEquipmentData(i, equipmentIds[i],c,equipmentResponse,equipmentLength,res
+					equipmentObject.getEquipmentData(i, equipmentIds[i],c,equipmentResponse,equipmentLength,res, startTimeFormatted, endTimeFormatted
 					);
-
-
 				}
-
 			});
-
 		});
 	});
+});
 
+
+app.get('/pastDataAtITP', function (req,res){
+	var equipmentResponse = [];
+	//console.log('potato');
+	var shopLocationId = 'b121b9e6-44e6-40b3-b787-ee667bfa084d';
+
+	var equipFromSublocationUrl = '/api/sublocation/'+ shopLocationId +'/equipment/';
+
+	/******************************************
+	TIME VARIABLES FOR THE API CALL
+	******************************************/
+	var noOfHours = 24;
+
+	var endTime = new Date(2015,12,17);
+	var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
+
+	var startTime = new Date( 2015,12,16);
+	var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
+	//console.log(startTimeFormatted);
+	//console.log(endTimeFormatted);
+
+	var equipmentsInShop = c.apiCall(equipFromSublocationUrl, function(equipmentsInShop){
+		var parsedData = JSON.parse(equipmentsInShop);
+		var equipmentLength = parsedData.length;
+
+		for(var i=0;i<parsedData.length;i++)
+		{
+			equipmentIds[i] = parsedData[i]["id"];
+			equipmentObject.getEquipmentData(i, equipmentIds[i],c,equipmentResponse,equipmentLength,res, startTimeFormatted, endTimeFormatted
+			);
+		}
+
+
+	});
 });
 
 

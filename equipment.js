@@ -1,17 +1,9 @@
 module.exports = {
-  getEquipmentData: function(index, equipmentId, c, equipmentResponse, noOfEquipments,res)
+  getEquipmentData: function(index, equipmentId, c, equipmentResponse, noOfEquipments,res, startTimeFormatted, endTimeFormatted)
   {
     //console.log('inside test function -- '+ index );
 
-    var noOfHours = 24;
 
-    var endTime = new Date();
-  	var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
-
-    var startTime = new Date( endTime.getTime() - noOfHours*60*60*1000);
-    var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
-    //console.log(startTimeFormatted);
-    //console.log(endTimeFormatted);
 
   	var detailOfEquipmentUrl = '/api/equipment/' + equipmentId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=hour&cost=false';
 
