@@ -15,14 +15,23 @@ module.exports = {
         console.log('obtaining data for -- ' + keyName );
 
         var equipmentEnergy = [];
-        var totalEnergy = 0;
+        var totalEnergyOffPeak = 0;
+        var totalEnergyPeak = 0;
         for(var i =0;i<parsedData.data.length;i++)
         {
           equipmentEnergy[i] = {x:i,y:parsedData.data[i][keyName]*1000};
-          totalEnergy += parsedData.data[i][keyName]*1000;
+          if(i%24<10)
+          {
+            totalEnergyOffPeak += parsedData.data[i][keyName]*1000;
+          }
+          else
+          {
+            totalEnergyPeak += parsedData.data[i][keyName]*1000;
+          }
+
         }
         //console.log('total energy is -- ' + totalEnergy);
-        equipmentResponse.push({name:keyName,value: equipmentEnergy,totalEnergy: totalEnergy});
+        equipmentResponse.push({name:keyName,value: equipmentEnergy,totalEnergyOffPeak: totalEnergyOffPeak, totalEnergyPeak: totalEnergyPeak});
 
 
       }

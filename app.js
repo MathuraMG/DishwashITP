@@ -42,6 +42,12 @@ app.get('/login', function (req,res){
 		console.log("YOU ARE AUTHENTICATED");
 
 		var apiClient = c.apiCall('/api/client/', function (apiClient){
+
+			//CHANGE CLIENT ID -- HARDCODE
+
+			// TOKEN IS BEING SAVED -- TRY AND RETRIEVE
+			// IF TOKEN IS EXPIRED -- LOGIN AGAIN
+
 			//console.log(apiClient);
 			//console.log(' ----- ');
 			var clientInfo = JSON.parse(apiClient);
@@ -55,12 +61,12 @@ app.get('/login', function (req,res){
 			/******************************************
 			TIME VARIABLES FOR THE API CALL
 			******************************************/
-			var noOfHours = 24;
+			var noOfHours = 24*7;
 
-			var endTime = new Date();
+			var endTime = new Date(2016,02,10,00,00,00);
 			var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
 
-			var startTime = new Date( endTime.getTime() - noOfHours*60*60*1000);
+			var startTime = new Date( 2016,02,03,00,00,00);
 			var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
 			//console.log(startTimeFormatted);
 			//console.log(endTimeFormatted);
@@ -93,10 +99,10 @@ app.get('/pastDataAtITP', function (req,res){
 	******************************************/
 	var noOfHours = 24;
 
-	var endTime = new Date(2015,12,17);
+	var endTime = new Date(2016,02,10);
 	var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
 
-	var startTime = new Date( 2015,12,16);
+	var startTime = new Date( 2016,02,03);
 	var startTimeFormatted = startTime.toISOString().substring(0,19)+'Z';
 	//console.log(startTimeFormatted);
 	//console.log(endTimeFormatted);

@@ -10,9 +10,20 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js "></script>
     <script src="data.js"></script>
   </head>
+
   <body>
-    <svg id="visualisation" ></svg>
-    <div class="allIndexButtons"></div>
+    <section class="visualtisations">
+      <svg id="visualisation" ></svg>
+      <div class="allIndexButtons"></div>
+    </section>
+    <!--
     <button class="pastEnergyDataButton">Past Data</button>
+  -->
+
+    <section class="totalEnergyNumbers">
+      <div id="chartPeakData" class="pieChart"></div>
+      
+      <div id="chartOffPeakData" class="pieChart"></div>
+    </section>
   </body>
 </html>
