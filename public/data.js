@@ -1,6 +1,8 @@
 var result_graph;
 var pastFlag = 0;
 var pastFlagDisplay = 0;
+var energyBulbInOneWeek = 2.352;
+
 $(document).ready(function(){
   // console.log("test1");
   $.ajax({
@@ -10,6 +12,8 @@ $(document).ready(function(){
       // console.log(result);
       drawGraph(result,0);
       drawPieCharts(result);
+      writeIndNumbers(result);
+
     }
   });
  $(".pastEnergyDataButton").click(function(){
@@ -40,18 +44,81 @@ $(document).ready(function(){
   });
 });
 
+function writeIndNumbers(allLineData)
+{
+  var section = document.getElementsByClassName('perEquipmentNumber')[0];
+
+  for(var i=0;i<allLineData.length;i++)
+  {
+    if(allLineData[i].name.localeCompare("x") == 0){
+      console.log('garbegeish');
+    }
+    else if(allLineData[i].name.localeCompare("Outlet") == 0){
+      console.log('garbegeish');
+    }
+    else if(allLineData[i].name.localeCompare("Laser Cutter") == 0){
+      console.log('garbegeish');
+    }
+    else if(allLineData[i].name.localeCompare("Emergency Power Switch") == 0){
+      console.log('garbegeish');
+    }
+    else
+    {
+      var totalEnergykWh = allLineData[i].totalEnergyOffPeak + allLineData[i].totalEnergyPeak;
+      var className = 'class-'+allLineData[i].name;
+      className = className.replace(/\s+/g, '');
+
+      var dataDiv = document.createElement('div');
+      dataDiv.classList.add('equipmentDetails');
+      dataDiv.classList.add(className);
+
+      section.appendChild(dataDiv);
+
+      var equipName = document.createElement('div');
+      equipName.classList.add('equipmentName');
+      equipName.innerHTML = allLineData[i].name;
+
+      var equipEnergy = document.createElement('div');
+      equipEnergy.classList.add('equipmentEnergy');
+      equipEnergy.innerHTML = Math.round(totalEnergykWh/4000,2) + 'kWh';
+
+      var equipEnergyPeak = document.createElement('div');
+      equipEnergyPeak.classList.add('equipmentEnergy');
+      equipEnergyPeak.innerHTML = Math.round(allLineData[i].totalEnergyPeak/4000,2) + 'kWh';
+
+      var equipEnergyOffPeak = document.createElement('div');
+      equipEnergyOffPeak.classList.add('equipmentEnergy');
+      equipEnergyOffPeak.innerHTML = Math.round(allLineData[i].totalEnergyOffPeak/4000,2) + 'kWh';
+
+      var InstPower = document.createElement('div');
+      InstPower.classList.add('equipmentEnergy');
+      InstPower.innerHTML = Math.round(totalEnergykWh/(24*7*4),2) + 'W';
+
+      dataDiv.appendChild(equipName);
+      dataDiv.appendChild(equipEnergy);
+      dataDiv.appendChild(equipEnergyPeak);
+      dataDiv.appendChild(equipEnergyOffPeak);
+      dataDiv.appendChild(InstPower);
+    }
+
+
+  }
+}
+
 function drawGraph(allLineData,lineStyle)
 {
+
+
   var vis = d3.select('#visualisation'),
-      WIDTH = 0.8*screen.width,
+      WIDTH = 0.7*screen.width,
       HEIGHT = 500,
       MARGINS = {
         top: 20,
-        right: 100,
+        right: 20,
         bottom: 20,
-        left: 100
+        left: 40
       },
-      xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([0,24*7]),
+      xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([0,24*7*4]),
       yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,2500]),
       xAxis = d3.svg.axis()
         .scale(xRange)
@@ -74,13 +141,13 @@ function drawGraph(allLineData,lineStyle)
     .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
     .call(y1Axis);
 var i =1;
-var scale = ((0.8*screen.width-200)/168);
+var scale = ((0.7*screen.width-60)/168);
   //vis.append("rect").attr("x", scale*24*i).attr("y", 20).attr("width",  scale*10).attr("fill","#888888").attr("height", 460);
 
   for(var i=0;i<7;i++)
   {
     console.log('drawing rectangle no. -- ' + i);
-    vis.append("rect").attr("x", scale*24*i + 100).attr("y", 20).attr("width",  scale*10).attr("fill","#888888").attr("height", 460).attr("opacity",0.5);
+    vis.append("rect").attr("x", scale*24*i + 40).attr("y", 20).attr("width",  scale*10).attr("fill","#888888").attr("height", 460).attr("opacity",0.5);
   }
 
   var lineFunc = d3.svg.line()
@@ -118,7 +185,8 @@ var scale = ((0.8*screen.width-200)/168);
       {
         console.log('drawing graph for -- ' + allLineData[i].name );
         var className = 'class-'+allLineData[i].name;
-        var color = d3.hsl(colorIndex*30, 0.5,0.5);
+        className = className.replace(/\s+/g, '');
+        var color = d3.hsl(360-colorIndex*30, 0.4,0.65);
         colorIndex++;
         var classNamePath = className + ' graphPath';
 
@@ -154,6 +222,7 @@ var scale = ((0.8*screen.width-200)/168);
 
         if(lineStyle == 0)
         {
+
           indexContent(allLineData[i].name,className, allIndexDiv,color);
         }
       }
@@ -165,16 +234,17 @@ function indexContent(text,className,allIndexDiv,color)
   console.log('drawing button for -- ' + text);
 
   var a = document.createElement('button');
-  a.innerHTML = text;
+  a.innerHTML = text ;
   a.classList.add('indexElements');
   allIndexDiv.appendChild(a);
+  a.style.background = color;
   a.onclick = function(){
     var line = document.getElementsByClassName(className);
     for(var i=0;i<line.length;i++){
       if(line[i].style.display.localeCompare('none') == 0)
       {
         line[i].style.display = 'block';
-        a.style.background = '#ffffff';
+        a.style.background = color;
       }
       else
       {
@@ -186,11 +256,14 @@ function indexContent(text,className,allIndexDiv,color)
 
   }
 }
-  
+
 function drawPieCharts(energyData)
 {
   var totalEnergyOffPeakData = [];
   var totalEnergyPeakData = [];
+
+  var totalEnergyOffPeakDataWatt = 0;
+  var totalEnergyPeakDataWatt = 0;
 
   var width = 0.3*screen.width;
   var height = 0.3*screen.width;
@@ -222,16 +295,27 @@ function drawPieCharts(energyData)
     totalEnergyOffPeakData.push(
       {"label":energyData[i].name,
       "value":energyData[i].totalEnergyOffPeak});
+
+    totalEnergyOffPeakDataWatt += energyData[i].totalEnergyOffPeak;
+    totalEnergyPeakDataWatt += energyData[i].totalEnergyPeak;
     }
   }
 
-    getPieChart(totalEnergyPeakData, width, height,radius,'#chartPeakData');
-    getPieChart(totalEnergyOffPeakData, width, height,radius,'#chartOffPeakData');
+  var ratio = totalEnergyOffPeakDataWatt/totalEnergyPeakDataWatt;
+
+  $('#numbersPeakData').html( Math.round(totalEnergyPeakDataWatt/4000,2) + 'kWh');
+  $('#numbersOffPeakData').html( Math.round(totalEnergyOffPeakDataWatt/4000,2) + 'kWh');
+  var noOfBulbs = Math.round(((totalEnergyOffPeakDataWatt+totalEnergyPeakDataWatt)/4000)/energyBulbInOneWeek,0);
+  $('#noOfBulbs').html( 'Energy usage in the shop is same as leaving '+ noOfBulbs +' bulbs on all day and night for a week ');
+
+  drawLightBulbs(noOfBulbs);
+  getPieChart(totalEnergyPeakData, width, height,radius,'#chartPeakData',0,0);
+  getPieChart(totalEnergyOffPeakData, width, height,radius*ratio,'#chartOffPeakData',width/2,height/2);
 
 }
-function getPieChart(data,width,height,radius,id)
+function getPieChart(data,width,height,radius,id,xOffset,yOffset)
 {
-  var vis = d3.select(id).append("svg:svg").data([data]).attr("width", width).attr("height", height).append("svg:g").attr("transform", "translate(" +(radius ) + "," + radius + ")");
+  var vis = d3.select(id).append("svg:svg").data([data]).attr("width", width).attr("height", height).append("svg:g").attr("transform", "translate(" +(radius+xOffset ) + "," + (radius+yOffset) + ")");
   var pie = d3.layout.pie().value(function(d){return d.value;});
 
   // declare an arc generator function
@@ -242,7 +326,7 @@ function getPieChart(data,width,height,radius,id)
   arcs.append("svg:path")
       .attr("fill", function(d, i){
         console.log('the color is -- ' + i)
-          return d3.hsl(i*30, 0.5,0.5);
+          return d3.hsl(360-i*30, 0.4,0.65);
       })
       .attr("d", function (d) {
           // log the result of the arc generator to show how cool it is :)
@@ -256,51 +340,19 @@ function getPieChart(data,width,height,radius,id)
   			d.outerRadius = 100;
       return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
       return data[i].label;}
-  		);
+    ).attr("class","pieChartText");
 
 }
 
-/******************
+function drawLightBulbs(noOfBulbs)
+{
+  for(var i=0;i<noOfBulbs;i++)
+  {
+    var img = document.createElement('img');
+    img.src = '/assets/CFL.png';
+    img.classList.add('bulbImage');
 
-------------------
-PIE CHART EXAMPLE
-------------------
-
-var w = 400;
-var h = 400;
-var r = h/2;
-var color = d3.scale.category20c();
-
-var data = [{"label":"Category A", "value":20},
-		          {"label":"Category B", "value":20},
-		          {"label":"Category C", "value":30}];
-
-
-var vis = d3.select('#chart').append("svg:svg").data([data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
-var pie = d3.layout.pie().value(function(d){return d.value;});
-
-// declare an arc generator function
-var arc = d3.svg.arc().outerRadius(r);
-
-// select paths, use arc generator to draw
-var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
-arcs.append("svg:path")
-    .attr("fill", function(d, i){
-        return color(i);
-    })
-    .attr("d", function (d) {
-        // log the result of the arc generator to show how cool it is :)
-        console.log(arc(d));
-        return arc(d);
-    });
-
-// add the text
-arcs.append("svg:text").attr("transform", function(d){
-			d.innerRadius = 0;
-			d.outerRadius = r;
-    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
-    return data[i].label;}
-		);
-
-
-******************/
+    var block = document.getElementsByClassName('numberOfBulbsInfograph')[0];
+    block.appendChild(img);
+  }
+}

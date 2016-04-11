@@ -12,6 +12,8 @@
   </head>
 
   <body>
+    <h1 class="pageHeading"> What happens in the Shop.. </h1>
+    <h3 class="pageSubHeading">Graph of Power(W) vs Time(15min blocks) in the past one week in the shop</h3>
     <section class="visualtisations">
       <svg id="visualisation" ></svg>
       <div class="allIndexButtons"></div>
@@ -20,10 +22,59 @@
     <button class="pastEnergyDataButton">Past Data</button>
   -->
 
-    <section class="totalEnergyNumbers">
-      <div id="chartPeakData" class="pieChart"></div>
-      
-      <div id="chartOffPeakData" class="pieChart"></div>
+    <section class="perEquipmentNumber">
+      <div class="equipmentDetails" "equipmentDetailsHeadings">
+        <div class="equipmentName equipmentDetailsHeadings">
+          Equipment
+        </div>
+        <div class="equipmentEnergy equipmentDetailsHeadings">
+          Total Energy(kWh)
+        </div>
+        <div class="equipmentEnergy equipmentDetailsHeadings">
+          Total Energy - Peak (kWh)
+        </div>
+        <div class="equipmentEnergy equipmentDetailsHeadings">
+          Total Energy - Off Peak (kWh)
+        </div>
+        <div class="equipmentEnergy equipmentDetailsHeadings">
+          Avg. Power(W)
+        </div>
+
+      </div>
     </section>
+
+    <h3 class="pageSubHeading">Day(9am-11pm) Vs. Night(11pm-9am) Energy Consumption</h3>
+    <section class="totalEnergyNumbers">
+      <div class="pieChartCover">
+        <div id="chartPeakData" class="pieChart"></div>
+        <div class="pieChartNumbers" id="numbersPeakData"></div>
+      </div>
+      <div class="pieChartCover">
+        <div id="chartOffPeakData" class="pieChart"></div>
+        <div class="pieChartNumbers" id="numbersOffPeakData"></div>
+      </div>
+    </section>
+
+
+
+    <h3 class="pageSubHeading">If you leave a bulb on for an hour, it consumes 0.014kWh - and 2.352kWh if you left it on all week</h3>
+    <h3 class="pageSubHeading" id="noOfBulbs"></h3>
+
+
+    <section class="numberOfBulbsInfograph">
+
+    </section>
+
+    <!-- <h3 class="pageSubHeading">But how much energy does ITP use?</h3>
+
+    <section class="ITPNumbers">
+      <img src="/assets/ITP.png"></img>
+
+    </section>
+
+ -->
+
+
+    <h1 class="pageHeading"> .. stays in the shop </h1>
   </body>
 </html>

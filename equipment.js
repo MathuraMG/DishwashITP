@@ -5,10 +5,11 @@ module.exports = {
 
 
 
-  	var detailOfEquipmentUrl = '/api/equipment/' + equipmentId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=hour&cost=false';
+  	var detailOfEquipmentUrl = '/api/equipment/' + equipmentId + '/data/?fromTime=' + startTimeFormatted +'&toTime='+ endTimeFormatted + '&interval=15min&cost=false';
 
     var equipmentData = c.apiCall(detailOfEquipmentUrl, function(equipmentData){
   		var parsedData = JSON.parse(equipmentData);
+      //console.log(parsedData);
       if(parsedData.data.length>0)
       {
     		var keyName =  Object.keys(parsedData.data[0])[1];
@@ -20,7 +21,7 @@ module.exports = {
         for(var i =0;i<parsedData.data.length;i++)
         {
           equipmentEnergy[i] = {x:i,y:parsedData.data[i][keyName]*1000};
-          if(i%24<10)
+          if(i%96<40)
           {
             totalEnergyOffPeak += parsedData.data[i][keyName]*1000;
           }
