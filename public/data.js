@@ -8,8 +8,6 @@ $(document).ready(function(){
   $.ajax({
     url:"/login",
     success: function(result){
-      // console.log('there should be nice data here. SHOULD');
-      // console.log(result);
       drawGraph(result,0);
       drawPieCharts(result);
       writeIndNumbers(result);

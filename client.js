@@ -16,6 +16,7 @@
 
   created 25 Feb 2015 by Tom Igoe
   updated 06 Jan 2016 by John Farrell
+
 */
 
 
@@ -51,43 +52,50 @@ var enertiv = function() {
   var self = this;
   var callback;
   var accessToken;
-
+	var resultToken = '';
+	var resultTokenParsed ;
   // Authenticate with Enertiv API
   // Login runs callback to saveToken
   this.login = function(cb){
-    callback = cb;
-		console.log('inside login');
+
+		callback = cb;
+
     var request = https.request(options, self.saveToken);  // start it
 		console.log('inside login -- got request');
-      request.write(loginData);                           // add  body of  POST request
-			console.log(loginData);
-			console.log('inside login -- got logindata');
-      request.end();
-			console.log('inside login -- end');
+		if(!accessToken)
+		{
+    	request.write(loginData);  // add  body of  POST request
+		}
+		console.log(loginData);
+		console.log('inside login -- got logindata');
+    request.end();
+		console.log('inside login -- end');
+
   };
 
   // Parse response and save auth token
   // Pass that token to further API calls
   this.saveToken = function(response){
-    var result = '';    // String to hold the response
+    // var resultToken = '';    // String to hold the response
 		console.log('inside saveToken');
     // As each chunk comes in, add it to the result string:
     response.on('data', function (data) {
-			console.log('checking result in saveToken');
-			console.log(result);
-      result += data;
+			console.log(resultToken);
+			if(!accessToken){
+				console.log('adding result to resultToken');
+      	resultToken += data;
+			}
     });
 
     // When the final chunk comes in, grab the access token
     // Then run our callback function
     response.on('end', function () {
 
-			console.log(result);
-			result = JSON.parse(result);
-			console.log(result);
+			console.log(resultToken);
+			resultTokenParsed = JSON.parse(resultToken);
+			//console.log(result);
 			console.log('inside saveToken -- got result');
-      accessToken = result.access_token;
-			console.log('inside saveToken -- got accesToken');
+      accessToken = resultTokenParsed.access_token;
       callback();
     });
   };
