@@ -1,5 +1,6 @@
 var express = require('express');
 var client1 = require('./client.js');
+var cors = require('cors');
 var equipmentObject = require('./equipment.js');
 
 var app = express();
@@ -10,6 +11,7 @@ var noComplete = 0;
 
 //To use static HTML pages
 app.use(express.static('public'));
+app.use(cors());
 
 // Examples using Enertiv node module with Express
 // See https://api.enertiv.com/docs/#!/api/ for available endpoints
@@ -32,7 +34,6 @@ var topData = [];
 var energyData = [];
 var equipData = [];
 var equipmentIds = [];
-
 
 // Hit this first to authenticate and get current data
 app.get('/login', function (req,res){
@@ -103,7 +104,7 @@ app.get('/login', function (req,res){
 });
 
 // Start our server
-var server = app.listen(process.env.PORT || 3000, function () {
+var server = app.listen(process.env.PORT || 4000, function () {
 	var host = server.address().address;
 	var port = server.address().port;
 	console.log('app listening at http://%s:%s', host, port);
