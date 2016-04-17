@@ -73,9 +73,9 @@ app.get('/login', function (req,res){
 			var noOfHours = 24*7;
 
 			var endTime = new Date();
-			endTime.setHours(23);
-			endTime.setMinutes(0);
-			endTime.setSeconds(0);
+			endTime.setUTCHours(3);
+			endTime.setUTCMinutes(0);
+			endTime.setUTCSeconds(0);
 
 		//	var endTime = new Date(2016,03,10,23,00,00);
 			var endTimeFormatted = endTime.toISOString().substring(0,19)+'Z';
