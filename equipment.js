@@ -14,13 +14,15 @@ module.exports = {
       {
     		var keyName =  Object.keys(parsedData.data[0])[1];
         console.log('obtaining data for -- ' + keyName );
+        var timeVar = Object.keys(parsedData.data[0])[0];
 
         var equipmentEnergy = [];
         var totalEnergyOffPeak = 0;
         var totalEnergyPeak = 0;
         for(var i =0;i<parsedData.data.length;i++)
         {
-          equipmentEnergy[i] = {x:i,y:parsedData.data[i][keyName]*1000};
+          
+          equipmentEnergy[i] = {x:parsedData.data[i][timeVar],y:parsedData.data[i][keyName]*1000};
           if(i%96<40)
           {
             totalEnergyOffPeak += parsedData.data[i][keyName]*1000;

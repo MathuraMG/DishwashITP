@@ -106,7 +106,8 @@ function writeIndNumbers(allLineData)
 function drawGraph(allLineData,lineStyle)
 {
 
-
+console.log(allLineData);
+console.log( new Date(allLineData[0].value[0].x) + ' -- ' + new Date(allLineData[0].value[672].x));
   var vis = d3.select('#visualisation'),
       WIDTH = 0.7*screen.width,
       HEIGHT = 500,
@@ -116,12 +117,17 @@ function drawGraph(allLineData,lineStyle)
         bottom: 20,
         left: 40
       },
-      xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([0,24*7*4]),
-      yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,2500]),
+
+      xRange = d3.time.scale()
+      .domain([new Date(allLineData[0].value[0].x), d3.time.day.offset((new Date(allLineData[0].value[672].x)), 0
+      )])
+      .range([MARGINS.left, WIDTH - MARGINS.right]),
+      yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,3000]),
       xAxis = d3.svg.axis()
         .scale(xRange)
         .tickSize(2)
         .ticks(7)
+        .tickFormat(d3.time.format("%e %b %I %p"))
         //.tickValues(["3 Feb","4 Feb","5 Feb","6 Feb","7 Feb","8 Feb","9 Feb"]);
       y1Axis = d3.svg.axis()
         .scale(yRange)
@@ -150,7 +156,7 @@ var scale = ((0.7*screen.width-60)/168);
 
   var lineFunc = d3.svg.line()
     .x(function(d) {
-      return xRange(d.x);
+      return xRange(new Date(d.x));
     })
     .y(function(d) {
       return yRange(d.y);
@@ -211,7 +217,7 @@ var scale = ((0.7*screen.width-60)/168);
 
         var classNameText = className + ' graphText';
         vis.append('svg:text')
-    		.attr('transform', 'translate(' + (910) + ',' + (2500-allLineData[i].value[22*7].y)+ ')')
+    		.attr('transform', 'translate(' + (910) + ',' + (3000-allLineData[i].value[22*7].y)+ ')')
     		.attr('dy', '0')
     		.attr('text-anchor', 'start')
     		.style('fill', color)
